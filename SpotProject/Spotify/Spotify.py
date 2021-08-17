@@ -60,7 +60,6 @@ class Spotify():
         url = f"{endpoint}?{_data}"
         return url
 
-
     def get_search_base(self):
         return 'https://api.spotify.com/v1/search'
 
@@ -79,19 +78,13 @@ class Spotify():
             'type': type,
             'limit': _limit
         }
-        url = self.get_url_encode(_data,self.get_search_base())
-        print(url)
-        _headers = {
-            'Authorization' : f'Bearer {self.get_acces_token()}',
-        }
-        response = requests.get(url, headers = _headers)
+        response = self.get_search_response(_data) 
         print(self.acces_token)
         if response.status_code in range (200,299):
             data = response.json()
             canciones = data['tracks']['items']
             i = 0
             listaCanciones = []
-            listAlbum = []
             for c in canciones:
                 i += 1
                 print("Item {}" .format(i))
@@ -104,28 +97,38 @@ class Spotify():
                     'Fecha': album['release_date']
                     }
                 ))
-                listAlbum.append(dict(
-                    {'Id':album['id'],'Nombre':album['name'].replace('\xad', '')}
-                ))
             return listaCanciones
         else:
             return []
     
-    def get_all_albunms(self,query,type,_limit):
+    def get_all_albums(self,query,type,_limit):
         _data = {
             'q': query,
             'type': type,
             'limit': _limit
         }
-        
         response = self.get_search_response(_data) 
         if response.status_code in range (200,299):
             data = response.json()
-            
-            return listaCanciones
+            print("llaves {} " .format(data.keys()))
+            # print("Que tiene data>albums {}"  .format(data['albums']))
+            print("llaves del data>albums {} " .format(data['albums'].keys()))
+            albumes = data['albums']['items']
+            listAlbumes = []
+            i = 0
+            for a in albumes:
+                # print("Nombre album " .format(a.keys()))
+                print(a['name'])
+                print(a['id'])
+                print(a['release_date'])
+                print(a['album_type'])
+                listAlbumes.append(dict(
+                    {'Id':a['id'],'Nombre':a['name'].replace('\xad', ''),
+                    'Fecha': a['release_date'],'album_type': a['album_type']}
+            ))            
+            return listAlbumes
         else:
             return []        
 
-        pass
     def get_track(self):
         pass

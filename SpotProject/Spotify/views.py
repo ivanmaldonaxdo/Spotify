@@ -17,39 +17,8 @@ def Home(request):
     # print(canciones)
 
     # context = {'songs':canciones}
-    acces_token = sp.acces_token
-    endpoint='https://api.spotify.com/v1/search'
-    _data = urlencode({
-        'q':'l-gante',
-        'type':'album',
-        'limit':limit
-    })
-    _headers = {
-    'Authorization' : f'Bearer {acces_token}',
-    }
-    url = f"{endpoint}?{_data}"
-    # print(_data)
-    print(url)
-    response = requests.get(url, headers = _headers)
 
-    print(response.status_code)
-    data = response.json()
-    print("llaves {} " .format(data.keys()))
-    # print("Que tiene data>albums {}"  .format(data['albums']))
-    print("llaves del data>albums {} " .format(data['albums'].keys()))
-    albumes = data['albums']['items']
-    listAlbumes = []
-    i = 0
-    for a in albumes:
-        # print("Nombre album " .format(a.keys()))
-        print(a['name'])
-        print(a['id'])
-        print(a['release_date'])
-        print(a['album_type'])
-        listAlbumes.append(dict(
-            {'Id':a['id'],'Nombre':a['name'].replace('\xad', ''),
-            'Fecha': a['release_date'],'album_type': a['album_type']}
-    ))
+    listAlbumes = sp.get_all_albums('Toto','album',limit)
     listAlbumes = sorted(listAlbumes, key = lambda i: (i['album_type'],i['Fecha']))
     # print("Items de data Albums {}" .format(albumes))
 
