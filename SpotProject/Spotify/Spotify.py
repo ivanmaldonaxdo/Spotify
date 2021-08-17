@@ -63,6 +63,15 @@ class Spotify():
 
     def get_search_base(self):
         return 'https://api.spotify.com/v1/search'
+
+    def get_search_response(self,_data):
+        url = self.get_url_encode(_data,self.get_search_base())
+        print(url)
+        _headers = {
+            'Authorization' : f'Bearer {self.get_acces_token()}',
+        }
+        response = requests.get(url, headers = _headers)
+        return response
     
     def get_all_tracks(self,query,type,_limit):
         _data = {
@@ -102,5 +111,21 @@ class Spotify():
         else:
             return []
     
+    def get_all_albunms(self,query,type,_limit):
+        _data = {
+            'q': query,
+            'type': type,
+            'limit': _limit
+        }
+        
+        response = self.get_search_response(_data) 
+        if response.status_code in range (200,299):
+            data = response.json()
+            
+            return listaCanciones
+        else:
+            return []        
+
+        pass
     def get_track(self):
         pass

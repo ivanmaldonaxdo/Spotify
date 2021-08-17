@@ -11,7 +11,7 @@ def Home(request):
     print(sp.Autorizacion())
     # print(sp.get_creds_b64())
     # print(sp.acces_token)
-    limit = 4
+    limit = 50
     limit = 20 if limit is None else limit
     # canciones = sp.get_all_tracks('licor','track',limit)
     # print(canciones)
@@ -20,7 +20,7 @@ def Home(request):
     acces_token = sp.acces_token
     endpoint='https://api.spotify.com/v1/search'
     _data = urlencode({
-        'q':'Green Day',
+        'q':'l-gante',
         'type':'album',
         'limit':limit
     })
@@ -45,20 +45,22 @@ def Home(request):
         print(a['name'])
         print(a['id'])
         print(a['release_date'])
+        print(a['album_type'])
         listAlbumes.append(dict(
-            {'Id':a['id'],'Nombre':a['name'].replace('\xad', ''),'Fecha': a['release_date'] }
+            {'Id':a['id'],'Nombre':a['name'].replace('\xad', ''),
+            'Fecha': a['release_date'],'album_type': a['album_type']}
     ))
-    # listAlbumes = sorted(listAlbumes, key = lambda i: i['Fecha'])
+    listAlbumes = sorted(listAlbumes, key = lambda i: (i['album_type'],i['Fecha']))
     # print("Items de data Albums {}" .format(albumes))
 
 
-        #ELIMINAR DUPLICAS DE DICCIONARIOS EN LISTA
-        #list_dupl = [dict(t) for t in {tuple(d.items()) for d in listAlbum}]   
-       # print(list_dupl)
+    #ELIMINAR DUPLICAS DE DICCIONARIOS EN LISTA
+    #list_dupl = [dict(t) for t in {tuple(d.items()) for d in listAlbum}]   
+    # print(list_dupl)
 
-        #ORDENAR LISTA DE DICCIONARIOS
-        # print(sorted(listaCanciones, key = lambda i: i['Fecha']))
-        # print(listAlbum)
+    #ORDENAR LISTA DE DICCIONARIOS
+    # print(sorted(listaCanciones, key = lambda i: i['Fecha']))
+    # print(listAlbum)
         #context = {'songs': sorted(listaCanciones, key = lambda i: i['Track'])}
     # print(response.status_code)
     # print(response.text)

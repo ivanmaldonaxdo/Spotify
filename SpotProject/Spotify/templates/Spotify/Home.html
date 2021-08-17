@@ -25,9 +25,14 @@
             
         </ul> -->
         <iframe src={{"https://open.spotify.com/embed/album/"|add:a.Id}}
-            width="300" height="380" frameborder="0" allowtransparency="true" 
+        width="300" height="{% if a.album_type == 'single' %}155{% else %}380{% endif %}" frameborder="0" allowtransparency="true" 
             allow="encrypted-media">
         </iframe>
+        
+        
+   
+       
+            
     {% endfor %}
         
         
