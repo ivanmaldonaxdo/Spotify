@@ -12,7 +12,24 @@
         <ul>
             <li>{{song.Track}}</li>
         </ul>
+        <iframe src={{"https://open.spotify.com/embed/track/"|add:song.id}}
+            width="300" height="380" frameborder="0" allowtransparency="true" 
+            allow="encrypted-media">
+        </iframe>
     {% endfor %}
+    
+    {% for a in Albumes %}
+        <!-- <ul>
+            <li>{{a.Nombre}}</li>
+            <li>{{a.Id}}</li>
+            
+        </ul> -->
+        <iframe src={{"https://open.spotify.com/embed/album/"|add:a.Id}}
+            width="300" height="380" frameborder="0" allowtransparency="true" 
+            allow="encrypted-media">
+        </iframe>
+    {% endfor %}
+        
         
 </body>
 </html>

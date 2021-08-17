@@ -1,6 +1,8 @@
+from urllib.parse import urlencode
 import requests,base64
 import datetime
-
+from urllib.parse import urlencode
+import json
 from requests import api
 class Spotify():
     client_id = None
@@ -36,17 +38,69 @@ class Spotify():
             data = response.json()
             acces_token = data['access_token']
             expires_in = data['expires_in']#segundos
-            totalTimeExpire = now + datetime.timedelta(seconds=expires_in)
-            self.time_expire_tk = totalTimeExpire
-            self.tk_expired = totalTimeExpire < now
+            tiempo_expiracion= now + datetime.timedelta(seconds=expires_in)
+            self.time_expire_tk = tiempo_expiracion
+            self.tk_expired = tiempo_expiracion < now
             self.acces_token = acces_token
             return True
         else:
             # token=data['access_token']
             return False
 
-        def get_all_tracks(self):
-            pass
-        
-        def get_track(self):
-            pass
+    def get_acces_token(self):
+        token = self.acces_token
+        expires = self.time_expire_tk
+        now = datetime.datetime.now()
+        if expires < now or token == None:
+            self.Autorizacion()
+            return self.get_acces_token()
+        return token
+    def get_url_encode(self,data,endpoint):
+        _data = urlencode(data)
+        url = f"{endpoint}?{_data}"
+        return url
+
+
+    def get_search_base(self):
+        return 'https://api.spotify.com/v1/search'
+    
+    def get_all_tracks(self,query,type,_limit):
+        _data = {
+            'q': query,
+            'type': type,
+            'limit': _limit
+        }
+        url = self.get_url_encode(_data,self.get_search_base())
+        print(url)
+        _headers = {
+            'Authorization' : f'Bearer {self.get_acces_token()}',
+        }
+        response = requests.get(url, headers = _headers)
+        print(self.acces_token)
+        if response.status_code in range (200,299):
+            data = response.json()
+            canciones = data['tracks']['items']
+            i = 0
+            listaCanciones = []
+            listAlbum = []
+            for c in canciones:
+                i += 1
+                print("Item {}" .format(i))
+                album=c['album']
+                print("Año de Publicacion  {}" .format(album['release_date']))
+                listaCanciones.append(dict(
+                    {'id': c['id'], 
+                    'Track': c['name'], 
+                    'Album': album['name'].replace('\xad', ''),
+                    'Fecha': album['release_date']
+                    }
+                ))
+                listAlbum.append(dict(
+                    {'Id':album['id'],'Nombre':album['name'].replace('\xad', '')}
+                ))
+            return listaCanciones
+        else:
+            return []
+    
+    def get_track(self):
+        pass
