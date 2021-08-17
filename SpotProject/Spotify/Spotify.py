@@ -118,10 +118,10 @@ class Spotify():
             i = 0
             for a in albumes:
                 # print("Nombre album " .format(a.keys()))
-                print(a['name'])
-                print(a['id'])
-                print(a['release_date'])
-                print(a['album_type'])
+                # print(a['name'])
+                # print(a['id'])
+                # print(a['release_date'])
+                # print(a['album_type'])
                 listAlbumes.append(dict(
                     {'Id':a['id'],'Nombre':a['name'].replace('\xad', ''),
                     'Fecha': a['release_date'],'album_type': a['album_type']}

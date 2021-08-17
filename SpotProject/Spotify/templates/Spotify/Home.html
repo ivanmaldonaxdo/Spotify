@@ -7,7 +7,12 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <form action="" method="get">
+        <label for="busqueda">Busqueda:</label>
+        <input type="search" name="busqueda" id="buscar" class="form-control" placeholder="Buscar" value="{{ request.GET.busqueda }}">
+        <button class="btn btn-success" type="submit">Buscar</button>
+    </form>
+    <br>
     {% for song in songs  %}
         <ul>
             <li>{{song.Track}}</li>
@@ -28,11 +33,7 @@
         width="300" height="{% if a.album_type == 'single' %}155{% else %}380{% endif %}" frameborder="0" allowtransparency="true" 
             allow="encrypted-media">
         </iframe>
-        
-        
-   
-       
-            
+    
     {% endfor %}
         
         
